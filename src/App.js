@@ -5,6 +5,7 @@ import {BrowserRouter as Router, Route} from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import ProfilePage from "./pages/ProfilePage";
 import MarketPage from "./pages/MarketPage";
+import Navbar from "./components/Navbar";
 import "./App.css";
 
 class App extends React.Component {
@@ -40,6 +41,14 @@ class App extends React.Component {
         }
     }
 
+    handleSignOut = async () => {
+        try {
+            await Auth.signOut()
+        } catch(err) {
+            console.error('Error signing out user', err)
+        }
+    }
+
     render() {
         const {user} = this.state
         return !user ? (
@@ -47,6 +56,10 @@ class App extends React.Component {
         ) : (
             <Router>
                 <>
+                    {/*Navigation*/}
+                    <Navbar user={user} handleSignOut={this.handleSignOut}/>
+
+
                     {/*Routes*/}
                     <div className={'app-container'}>
                         <Route exact path={'/'} component={HomePage}/>
@@ -54,8 +67,6 @@ class App extends React.Component {
                         <Route exact path={'/markets/:marketId'} component={({match}) => {
                             return <MarketPage marketId={match.params.marketId}/>
                         }}/>
-
-
                     </div>
                 </>
 
