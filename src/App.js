@@ -41,6 +41,14 @@ class App extends React.Component {
         }
     }
 
+    handleSignOut = async () => {
+        try {
+            await Auth.signOut()
+        } catch(err) {
+            console.error('Error signing out user', err)
+        }
+    }
+
     render() {
         const {user} = this.state
         return !user ? (
@@ -49,7 +57,7 @@ class App extends React.Component {
             <Router>
                 <>
                     {/*Navigation*/}
-                    <Navbar/>
+                    <Navbar user={user} handleSignOut={this.handleSignOut}/>
 
 
                     {/*Routes*/}
